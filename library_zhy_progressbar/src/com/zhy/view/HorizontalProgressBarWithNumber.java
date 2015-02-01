@@ -173,6 +173,7 @@ public class HorizontalProgressBarWithNumber extends ProgressBar
 
 		// canvas.drawRect(new Rect(0, 0, getHeight() / 2, getHeight() / 2),
 		// new Paint());
+		canvas.save();
 		canvas.translate(getPaddingLeft(), getHeight() / 2);
 
 		boolean noNeedBg = false;
