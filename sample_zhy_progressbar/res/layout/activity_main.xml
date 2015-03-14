@@ -12,7 +12,7 @@
 
         <com.zhy.view.HorizontalProgressBarWithNumber
             android:id="@+id/id_progressbar01"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dip"
             android:padding="5dp" />
@@ -30,9 +30,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dip"
-            android:padding="5dp"
+            android:background="#44ff0000"
             android:progress="30"
             zhy:progress_text_color="#ff03F793"
+            zhy:progress_text_size="30dp"
             zhy:progress_unreached_color="#ffAFF2D6" />
 
         <com.zhy.view.HorizontalProgressBarWithNumber
@@ -47,15 +48,16 @@
         <com.zhy.view.RoundProgressBarWidthNumber
             android:id="@+id/id_progress02"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_marginTop="50dip"
-            android:padding="5dp"
+            android:background="#44ff0000"
             android:progress="30" />
 
         <com.zhy.view.RoundProgressBarWidthNumber
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dip"
+            android:background="#44ff0000"
             android:padding="5dp"
             android:progress="50"
             zhy:progress_reached_bar_height="20dp"
@@ -66,7 +68,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dip"
-            android:padding="5dp"
+            android:background="#44ff0000"
+            android:padding="15dp"
             android:progress="70"
             zhy:progress_text_color="#ff2903FC"
             zhy:progress_text_size="30sp"

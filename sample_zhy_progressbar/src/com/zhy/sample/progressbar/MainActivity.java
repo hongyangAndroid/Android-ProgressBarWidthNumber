@@ -5,6 +5,7 @@ import com.zhy.view.RoundProgressBarWidthNumber;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
 import android.app.Activity;
 
 public class MainActivity extends Activity {
@@ -35,6 +36,13 @@ public class MainActivity extends Activity {
 		mRoundProgressBar = (RoundProgressBarWidthNumber) findViewById(R.id.id_progress02);
 		mHandler.sendEmptyMessage(MSG_PROGRESS_UPDATE);
 
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
 	}
 
 }

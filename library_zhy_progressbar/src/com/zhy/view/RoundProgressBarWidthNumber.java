@@ -35,8 +35,6 @@ public class RoundProgressBarWidthNumber extends
 				R.styleable.RoundProgressBarWidthNumber_radius, mRadius);
 		ta.recycle();
 
-		mTextSize = sp2px(14);
-
 		mPaint.setStyle(Style.STROKE);
 		mPaint.setAntiAlias(true);
 		mPaint.setDither(true);
@@ -44,6 +42,9 @@ public class RoundProgressBarWidthNumber extends
 
 	}
 
+	/**
+	 * 这里默认在布局中padding值要么不设置，要么全部设置
+	 */
 	@Override
 	protected synchronized void onMeasure(int widthMeasureSpec,
 			int heightMeasureSpec)
@@ -53,14 +54,11 @@ public class RoundProgressBarWidthNumber extends
 				mUnReachedProgressBarHeight);
 		int expect = mRadius * 2 + mMaxPaintWidth + getPaddingLeft()
 				+ getPaddingRight();
-		int width = resolveSize(expect, widthMeasureSpec) + getPaddingLeft()
-				+ getPaddingRight();
-		int height = resolveSize(expect, heightMeasureSpec) + getPaddingTop()
-				+ getPaddingBottom();
+		int width = resolveSize(expect, widthMeasureSpec);
+		int height = resolveSize(expect, heightMeasureSpec);
 		int realWidth = Math.min(width, height);
 
-		mRadius = width < height ? (realWidth - getPaddingLeft() - getPaddingRight() - mMaxPaintWidth) / 2
-				: (realWidth - getPaddingTop() - getPaddingBottom()- mMaxPaintWidth) / 2;
+		mRadius = (realWidth - getPaddingLeft() - getPaddingRight() - mMaxPaintWidth) / 2;
 
 		setMeasuredDimension(realWidth, realWidth);
 
