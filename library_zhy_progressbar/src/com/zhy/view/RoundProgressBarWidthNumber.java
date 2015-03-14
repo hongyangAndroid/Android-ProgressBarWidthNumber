@@ -11,17 +11,21 @@ import android.util.AttributeSet;
 import com.zhy.library.view.R;
 
 public class RoundProgressBarWidthNumber extends
-		HorizontalProgressBarWithNumber {
+		HorizontalProgressBarWithNumber
+{
 	/**
 	 * mRadius of view
 	 */
 	private int mRadius = dp2px(30);
+	private int mMaxPaintWidth;
 
-	public RoundProgressBarWidthNumber(Context context) {
+	public RoundProgressBarWidthNumber(Context context)
+	{
 		this(context, null);
 	}
 
-	public RoundProgressBarWidthNumber(Context context, AttributeSet attrs) {
+	public RoundProgressBarWidthNumber(Context context, AttributeSet attrs)
+	{
 		super(context, attrs);
 
 		mReachedProgressBarHeight = (int) (mUnReachedProgressBarHeight * 2.5f);
@@ -42,41 +46,37 @@ public class RoundProgressBarWidthNumber extends
 
 	@Override
 	protected synchronized void onMeasure(int widthMeasureSpec,
-			int heightMeasureSpec) {
-		int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-		int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+			int heightMeasureSpec)
+	{
 
-		int paintWidth = Math.max(mReachedProgressBarHeight,
+		mMaxPaintWidth = Math.max(mReachedProgressBarHeight,
 				mUnReachedProgressBarHeight);
+		int expect = mRadius * 2 + mMaxPaintWidth + getPaddingLeft()
+				+ getPaddingRight();
+		int width = resolveSize(expect, widthMeasureSpec) + getPaddingLeft()
+				+ getPaddingRight();
+		int height = resolveSize(expect, heightMeasureSpec) + getPaddingTop()
+				+ getPaddingBottom();
+		int realWidth = Math.min(width, height);
 
-		if (heightMode != MeasureSpec.EXACTLY) {
+		mRadius = width < height ? (realWidth - getPaddingLeft() - getPaddingRight() - mMaxPaintWidth) / 2
+				: (realWidth - getPaddingTop() - getPaddingBottom()- mMaxPaintWidth) / 2;
 
-			int exceptHeight = (int) (getPaddingTop() + getPaddingBottom()
-					+ mRadius * 2 + paintWidth);
-			heightMeasureSpec = MeasureSpec.makeMeasureSpec(exceptHeight,
-					MeasureSpec.EXACTLY);
-		}
-		if (widthMode != MeasureSpec.EXACTLY) {
-			int exceptWidth = (int) (getPaddingLeft() + getPaddingRight()
-					+ mRadius * 2 + paintWidth);
-			widthMeasureSpec = MeasureSpec.makeMeasureSpec(exceptWidth,
-					MeasureSpec.EXACTLY);
-		}
-
-		super.onMeasure(heightMeasureSpec, heightMeasureSpec);
+		setMeasuredDimension(realWidth, realWidth);
 
 	}
 
 	@Override
-	protected synchronized void onDraw(Canvas canvas) {
+	protected synchronized void onDraw(Canvas canvas)
+	{
 
 		String text = getProgress() + "%";
-		// mPaint.getTextBounds(text, 0, text.length(), mTextBound);
 		float textWidth = mPaint.measureText(text);
 		float textHeight = (mPaint.descent() + mPaint.ascent()) / 2;
 
 		canvas.save();
-		canvas.translate(getPaddingLeft(), getPaddingTop());
+		canvas.translate(getPaddingLeft() + mMaxPaintWidth / 2, getPaddingTop()
+				+ mMaxPaintWidth / 2);
 		mPaint.setStyle(Style.STROKE);
 		// draw unreaded bar
 		mPaint.setColor(mUnReachedBarColor);

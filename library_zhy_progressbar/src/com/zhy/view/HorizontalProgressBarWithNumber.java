@@ -60,9 +60,7 @@ public class HorizontalProgressBarWithNumber extends ProgressBar
 	 * view width except padding
 	 */
 	protected int mRealWidth;
-	/**
-	 * 鏄惁闇�缁樺埗鏂囨湰
-	 */
+
 	protected boolean mIfDrawText = true;
 
 	protected static final int VISIBLE = 0;
@@ -76,37 +74,43 @@ public class HorizontalProgressBarWithNumber extends ProgressBar
 			int defStyle)
 	{
 		super(context, attrs, defStyle);
-		
-		setHorizontalScrollBarEnabled(true);
-
 		obtainStyledAttributes(attrs);
-
 		mPaint.setTextSize(mTextSize);
 		mPaint.setColor(mTextColor);
-
 	}
 
 	@Override
 	protected synchronized void onMeasure(int widthMeasureSpec,
 			int heightMeasureSpec)
 	{
-		int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
-		Log.e("TAG", MeasureSpec.toString(heightMeasureSpec));
-		if (heightMode != MeasureSpec.EXACTLY)
+		int width = MeasureSpec.getSize(widthMeasureSpec);
+		int height = measureHeight(heightMeasureSpec);
+		setMeasuredDimension(width, height);
+
+		mRealWidth = getMeasuredWidth() - getPaddingRight() - getPaddingLeft();
+	}
+
+	private int measureHeight(int measureSpec)
+	{
+		int result = 0;
+		int specMode = MeasureSpec.getMode(measureSpec);
+		int specSize = MeasureSpec.getSize(measureSpec);
+		if (specMode == MeasureSpec.EXACTLY)
 		{
-
-			float textHeight = (mPaint.descent() + mPaint.ascent());
-			int exceptHeight = (int) (getPaddingTop() + getPaddingBottom() + Math
-					.max(Math.max(mReachedProgressBarHeight,
+			result = specSize;
+		} else
+		{
+			float textHeight = (mPaint.descent() - mPaint.ascent());
+			result = (int) (getPaddingTop() + getPaddingBottom() + Math.max(
+					Math.max(mReachedProgressBarHeight,
 							mUnReachedProgressBarHeight), Math.abs(textHeight)));
-
-			Log.e("tag", exceptHeight + " , ");
-			heightMeasureSpec = MeasureSpec.makeMeasureSpec(exceptHeight,
-					MeasureSpec.EXACTLY);
+			if (specMode == MeasureSpec.AT_MOST)
+			{
+				result = Math.min(result, specSize);
+			}
 		}
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
+		return result;
 	}
 
 	/**
@@ -160,19 +164,9 @@ public class HorizontalProgressBarWithNumber extends ProgressBar
 	}
 
 	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh)
-	{
-		super.onSizeChanged(w, h, oldw, oldh);
-		mRealWidth = w - getPaddingRight() - getPaddingLeft();
-
-	}
-
-	@Override
 	protected synchronized void onDraw(Canvas canvas)
 	{
 
-		// canvas.drawRect(new Rect(0, 0, getHeight() / 2, getHeight() / 2),
-		// new Paint());
 		canvas.save();
 		canvas.translate(getPaddingLeft(), getHeight() / 2);
 
@@ -206,7 +200,7 @@ public class HorizontalProgressBarWithNumber extends ProgressBar
 			mPaint.setColor(mTextColor);
 			canvas.drawText(text, progressPosX, -textHeight, mPaint);
 		}
-			
+
 		// draw unreached bar
 		if (!noNeedBg)
 		{
